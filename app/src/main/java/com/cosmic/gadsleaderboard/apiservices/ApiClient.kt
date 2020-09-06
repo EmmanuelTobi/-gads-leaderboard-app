@@ -1,5 +1,6 @@
 package com.cosmic.gadsleaderboard.apiservices;
 
+import com.cosmic.gadsleaderboard.models.LeaderboardModel
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -33,9 +34,9 @@ object ApiClient {
 interface APIInterface {
 
     @get:GET("/api/hours")
-    val leaderboardByHours: Call<List<Any?>?>?
+    val leaderboardByHours: Call<List<LeaderboardModel>?>?
 
     @get:GET("/api/skilliq")
-    val leaderboardBySkillIQ: Call<List<Any?>?>?
+    val leaderboardBySkillIQ: Call<List<LeaderboardModel>?>?
 
 }
