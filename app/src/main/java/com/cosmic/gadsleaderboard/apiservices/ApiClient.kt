@@ -13,8 +13,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-private const val SUBMIT_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf9d1TcNU6zc6KR8bSEM41Z1g1zl35cwZr2xyjIhaMAz8WChQ/formResponse"
-
 object ApiClient {
 
     private const val BASE_URL = "http://gadsapi.herokuapp.com"
@@ -23,6 +21,22 @@ object ApiClient {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    val apiServiceInterface: APIInterface = getRetrofit().create(APIInterface::class.java)
+
+}
+
+
+private const val SUBMIT_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf9d1TcNU6zc6KR8bSEM41Z1g1zl35cwZr2xyjIhaMAz8WChQ/formResponse"
+
+object SubmissionApiClient {
+
+    private fun getRetrofit(): Retrofit {
+
+        return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

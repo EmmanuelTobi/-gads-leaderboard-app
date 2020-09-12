@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -12,10 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.cosmic.gadsleaderboard.R
-import com.cosmic.gadsleaderboard.apiservices.ApiClient
-import com.cosmic.gadsleaderboard.apiservices.ApiHelper
+import com.cosmic.gadsleaderboard.apiservices.SubmissionApiClient
 import com.cosmic.gadsleaderboard.apiservices.submissionHelper
-import com.cosmic.gadsleaderboard.ui.viewModel.MainViewModel
 import com.cosmic.gadsleaderboard.ui.viewModel.SubmissionViewModel
 import com.cosmic.gadsleaderboard.utils.Status
 import com.cosmic.gadsleaderboard.utils.ViewModelFactory
@@ -24,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_skills_leaderboard.*
 
 class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitButtonClicked {
 
-    internal var handler = Handler()
     private var context: Context? = null
 
     val dialog = ConfirmDialogFragment()
@@ -62,7 +60,7 @@ class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitBu
         viewModel = ViewModelProviders.of(
             this,
             ViewModelFactory(null,
-                submissionHelper(ApiClient.apiServiceInterface,
+                submissionHelper(SubmissionApiClient.apiServiceInterface,
                     firstName = firstNameEditText.text.toString(),
                     lastName = lastNameEditText.text.toString(),
                     emailAddress = emailEditText.text.toString(),
@@ -79,8 +77,10 @@ class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitBu
                         skilliq_leaderboard_rv.visibility = View.VISIBLE
                         progress_bar_skills_board.visibility = View.GONE
                         resource.data?.let {
+
                             Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
-                            dialog.dismiss()
+                            Log.i("isSubmitted", "successful")
+
 
                         }
                     }
