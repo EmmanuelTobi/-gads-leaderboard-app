@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.cosmic.gadsleaderboard.R
 import com.cosmic.gadsleaderboard.apiservices.ApiClient
 import com.cosmic.gadsleaderboard.apiservices.ApiHelper
+import com.cosmic.gadsleaderboard.apiservices.submissionHelper
 import com.cosmic.gadsleaderboard.ui.viewModel.MainViewModel
 import com.cosmic.gadsleaderboard.ui.viewModel.SubmissionViewModel
 import com.cosmic.gadsleaderboard.utils.Status
@@ -26,14 +27,9 @@ class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitBu
     internal var handler = Handler()
     private var context: Context? = null
 
-    private lateinit var viewModel: SubmissionViewModel
+    val dialog = ConfirmDialogFragment()
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(
-            this,
-            ViewModelFactory(ApiHelper(ApiClient.apiServiceInterface))
-        ).get(SubmissionViewModel::class.java)
-    }
+    private lateinit var viewModel: SubmissionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +39,6 @@ class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitBu
 
         this.context = this@SubmissionActivity
 
-        setupViewModel()
 
         confirm_submission_button.setOnClickListener {
 
@@ -52,7 +47,6 @@ class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitBu
                 emailEditText.text.isNotEmpty() &&
                     githubLinkEditText.text.isNotEmpty()) {
 
-                val dialog = ConfirmDialogFragment()
                 dialog.setSubmitButtonClickListener(this)
                 dialog.show(supportFragmentManager, dialog.tag)
 
@@ -65,11 +59,19 @@ class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitBu
 
     override fun onSubmitButtonClicked(button: View) {
 
+        viewModel = ViewModelProviders.of(
+            this,
+            ViewModelFactory(null,
+                submissionHelper(ApiClient.apiServiceInterface,
+                    firstName = firstNameEditText.text.toString(),
+                    lastName = lastNameEditText.text.toString(),
+                    emailAddress = emailEditText.text.toString(),
+                    projectLink = githubLinkEditText.text.toString()), "submission")
+
+        ).get(SubmissionViewModel::class.java)
+
+
         viewModel.makeSubmission(
-            firstName = firstNameEditText.text.toString(),
-            lastName = lastNameEditText.text.toString(),
-            emailAddress = emailEditText.text.toString(),
-            projectLink = githubLinkEditText.text.toString()
         ).observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
@@ -78,9 +80,12 @@ class SubmissionActivity : AppCompatActivity(), ConfirmDialogFragment.OnSubmitBu
                         progress_bar_skills_board.visibility = View.GONE
                         resource.data?.let {
                             Toast.makeText(this, "Successful", Toast.LENGTH_LONG).show()
+                            dialog.dismiss()
+
                         }
                     }
                     Status.ERROR -> {
+                        dialog.dismiss()
 
                     }
                     Status.LOADING -> {

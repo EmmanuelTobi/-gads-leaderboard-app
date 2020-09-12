@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.cosmic.gadsleaderboard.R
 import com.cosmic.gadsleaderboard.apiservices.ApiClient
 import com.cosmic.gadsleaderboard.apiservices.ApiHelper
+import com.cosmic.gadsleaderboard.apiservices.submissionHelper
 import com.cosmic.gadsleaderboard.models.LeaderboardScoresModelItem
 import com.cosmic.gadsleaderboard.ui.adapters.ScoresAdapter
 import com.cosmic.gadsleaderboard.ui.viewModel.MainViewModel
@@ -32,7 +33,7 @@ class SkillsLeaderboardFragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiHelper(ApiClient.apiServiceInterface))
+            ViewModelFactory(ApiHelper(ApiClient.apiServiceInterface), submissionHelper = null, "")
         ).get(MainViewModel::class.java)
     }
 

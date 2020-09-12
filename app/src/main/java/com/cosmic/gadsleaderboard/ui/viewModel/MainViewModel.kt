@@ -43,12 +43,7 @@ class MainViewModel(private val apiHelper: ApiHelper) : ViewModel() {
 
 class SubmissionViewModel(private val submissionHelper: submissionHelper) : ViewModel() {
 
-    fun makeSubmission(firstName: String, lastName: String, emailAddress: String, projectLink: String) = liveData(Dispatchers.IO) {
-
-        submissionHelper.emailAddress = emailAddress
-        submissionHelper.firstName = firstName
-        submissionHelper.lastName = lastName
-        submissionHelper.projectLink = projectLink
+    fun makeSubmission() = liveData(Dispatchers.IO) {
 
         emit(Resource.loading(data = null))
 
