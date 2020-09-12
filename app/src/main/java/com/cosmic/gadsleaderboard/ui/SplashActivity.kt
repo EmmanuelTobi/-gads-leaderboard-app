@@ -34,7 +34,7 @@ class SplashActivity : AppCompatActivity() {
     internal var postTask: Runnable = Runnable {
 
         startActivity(Intent(context, MainActivity::class.java))
-        overridePendingTransition(2, 0)
+        overridePendingTransition(0, 0)
         finish()
     }
 

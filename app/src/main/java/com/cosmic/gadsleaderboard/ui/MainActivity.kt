@@ -1,5 +1,6 @@
 package com.cosmic.gadsleaderboard.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
@@ -34,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         setupViewPager(viewPager!!)
 
         submit_area.setOnClickListener {
-            Toast.makeText(this, "to_submit", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, SubmissionActivity::class.java))
+            finish()
         }
 
     }
