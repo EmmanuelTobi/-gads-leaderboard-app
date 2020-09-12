@@ -8,9 +8,12 @@ import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
+import retrofit2.http.*
+
+private const val SUBMIT_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf9d1TcNU6zc6KR8bSEM41Z1g1zl35cwZr2xyjIhaMAz8WChQ/formResponse"
 
 object ApiClient {
 
@@ -35,5 +38,14 @@ interface APIInterface {
 
     @GET("/api/skilliq")
     suspend fun leaderboardBySkillIQ(): List<LeaderboardScoresModelItem>
+
+    @POST
+    suspend fun submitProject(
+        @Url url: String = SUBMIT_URL,
+        @Field("entry.1877115667") firstName: String,
+        @Field("entry.2006916086") lastName: String,
+        @Field("entry.1824927963") emailAddress: String,
+        @Field("entry.284483984") projectLink: String
+    ): Response<Void>
 
 }
