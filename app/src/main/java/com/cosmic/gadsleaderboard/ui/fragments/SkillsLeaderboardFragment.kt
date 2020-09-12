@@ -33,7 +33,7 @@ class SkillsLeaderboardFragment : Fragment() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiHelper(ApiClient.apiServiceInterface), submissionHelper = null, "")
+            ViewModelFactory(ApiHelper(ApiClient("http://gadsapi.herokuapp.com").apiServiceInterface), submissionHelper = null, "")
         ).get(MainViewModel::class.java)
     }
 

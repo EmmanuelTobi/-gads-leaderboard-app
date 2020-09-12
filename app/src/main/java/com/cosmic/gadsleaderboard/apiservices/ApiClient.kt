@@ -13,30 +13,18 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-object ApiClient {
-
-    private const val BASE_URL = "http://gadsapi.herokuapp.com"
-
-    private fun getRetrofit(): Retrofit {
-
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    val apiServiceInterface: APIInterface = getRetrofit().create(APIInterface::class.java)
-
-}
-
-
+private const val BASE_URL = "http://gadsapi.herokuapp.com"
 private const val SUBMIT_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf9d1TcNU6zc6KR8bSEM41Z1g1zl35cwZr2xyjIhaMAz8WChQ/formResponse"
 
-object SubmissionApiClient {
+
+class ApiClient(baseurl : String) {
+
+    val url = baseurl;
 
     private fun getRetrofit(): Retrofit {
 
         return Retrofit.Builder()
+            .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -44,6 +32,7 @@ object SubmissionApiClient {
     val apiServiceInterface: APIInterface = getRetrofit().create(APIInterface::class.java)
 
 }
+
 
 interface APIInterface {
 
@@ -53,9 +42,9 @@ interface APIInterface {
     @GET("/api/skilliq")
     suspend fun leaderboardBySkillIQ(): List<LeaderboardScoresModelItem>
 
-    @POST
+    @POST("/1FAIpQLSf9d1TcNU6zc6KR8bSEM41Z1g1zl35cwZr2xyjIhaMAz8WChQ/formResponse")
+    @FormUrlEncoded
     suspend fun submitProject(
-        @Url url: String = SUBMIT_URL,
         @Field("entry.1877115667") firstName: String,
         @Field("entry.2006916086") lastName: String,
         @Field("entry.1824927963") emailAddress: String,
@@ -63,3 +52,5 @@ interface APIInterface {
     ): Response<Void>
 
 }
+
+
