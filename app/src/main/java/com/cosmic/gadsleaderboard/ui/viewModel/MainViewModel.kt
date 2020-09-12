@@ -6,7 +6,6 @@ import com.cosmic.gadsleaderboard.apiservices.ApiHelper
 import com.cosmic.gadsleaderboard.utils.Resource
 import kotlinx.coroutines.Dispatchers
 
-
 class MainViewModel(private val apiHelper: ApiHelper) : ViewModel() {
 
     fun getLeaderBoardByHours() = liveData(Dispatchers.IO) {

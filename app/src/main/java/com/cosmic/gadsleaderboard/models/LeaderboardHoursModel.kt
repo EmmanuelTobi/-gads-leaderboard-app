@@ -3,10 +3,10 @@ import androidx.annotation.Keep
 
 import com.google.gson.annotations.SerializedName
 
-class LeaderboardModel : ArrayList<LeaderboardModelItem>()
+class LeaderboardHoursModel : ArrayList<LeaderboardHoursModelItem>()
 
 @Keep
-data class LeaderboardModelItem(
+data class LeaderboardHoursModelItem(
     @SerializedName("badgeUrl")
     var badgeUrl: String?,
     @SerializedName("country")
