@@ -1,6 +1,9 @@
 package com.cosmic.gadsleaderboard.apiservices;
 
-import com.cosmic.gadsleaderboard.models.LeaderboardModel
+import com.cosmic.gadsleaderboard.models.LeaderboardHoursModel
+import com.cosmic.gadsleaderboard.models.LeaderboardHoursModelItem
+import com.cosmic.gadsleaderboard.models.LeaderboardScoresModel
+import com.cosmic.gadsleaderboard.models.LeaderboardScoresModelItem
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,32 +14,26 @@ import retrofit2.http.GET
 
 object ApiClient {
 
-    private const val BASE_URL = "https://gadsapi.herokuapp.com"
+    private const val BASE_URL = "http://gadsapi.herokuapp.com"
 
-    fun get(): Retrofit {
-
-        val gson = GsonBuilder().setLenient().create()
-        val interceptor = HttpLoggingInterceptor()
-
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    private fun getRetrofit(): Retrofit {
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    val apiServiceInterface: APIInterface = getRetrofit().create(APIInterface::class.java)
 
 }
 
 interface APIInterface {
 
-    @get:GET("/api/hours")
-    val leaderboardByHours: Call<List<LeaderboardModel>?>?
+    @GET("/api/hours")
+    suspend fun leaderboardByHours(): List<LeaderboardHoursModelItem>
 
-    @get:GET("/api/skilliq")
-    val leaderboardBySkillIQ: Call<List<LeaderboardModel>?>?
+    @GET("/api/skilliq")
+    suspend fun leaderboardBySkillIQ(): List<LeaderboardScoresModelItem>
 
 }
